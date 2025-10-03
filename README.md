@@ -60,10 +60,11 @@ Installation instructions
 -------------------------
 Simply copy the `GameData/BodyDragFix` folder into your KSP install's `GameData` folder.
 
+Dependencies
+------------
+You should have [HarmonyKSP](https://github.com/KSPModdingLibs/HarmonyKSP) installed, either via [CKAN](https://github.com/KSP-CKAN/CKAN) or manually.
+
 Incompatibilities
 -----------------
 
 Currently this mod is incompatible with KSP Community Fixes, as this mod rewrites a significant part of the `FlightIntegrator`, and I'll have to figure out how to re-edit their reworked code. If used together, it will look in the aerodynamic debug menus as if the behaviour is changed, but the actual simulation will use the old method.
-
-
-
