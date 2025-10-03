@@ -9,7 +9,7 @@ KSP uses the drag cube model for estimating drag for most components. It works b
 
 Unfortunately, the way it does this is fairly suboptimal. KSP will project the area of any drag cube face into the velocity direction, and simply use this projected area as the reference area for that face in the calculation, and the drag coefficient is kept constant. This results in drag estimations that vary wildly based on the direction a component is viewed from. Even a component as simple as a sphere can increase 70% in drag when facing the airstream in certain directions. This effect can be easily demonstrated using some dumpling tanks in game.
 
-![Some dumpling tanks at different angles](https://github.com/CensoredUsername/BodyDragFix/images/Spheres.png)
+![Some dumpling tanks at different angles](https://github.com/CensoredUsername/BodyDragFix/blob/master/images/Spheres.png)
 
 As most aircraft in KSP have a small frontal surface area but significant top/bottom area, this is especially problematic. Neglecting the front/rear faces, drag from a long object will double at less than 2.5 degrees angle of attack in any direction.
 
@@ -28,7 +28,7 @@ else:
 
 This behaviour results in the following curves:
 
-![A list of drag curves using KSPs face projection implementation](https://github.com/CensoredUsername/BodyDragFix/images/KSP_default_behaviour.png)
+![A list of drag curves using KSPs face projection implementation](https://github.com/CensoredUsername/BodyDragFix/blob/master/images/KSP_default_behaviour.png)
 
 As can be seen, the drag of a simple cube / sphere varies more than 40% just by spinning it around the pitch axis. The behaviour of drag around a cardinal direction changes sharply, which is very unrealistic.
 
@@ -44,13 +44,13 @@ else:
 
 This simple change produces the following curves:
 
-![A list of drag curves using the discussed face projection implementation](https://github.com/CensoredUsername/BodyDragFix/images/BodyDragFix_behaviour.png)
+![A list of drag curves using the discussed face projection implementation](https://github.com/CensoredUsername/BodyDragFix/blob/master/images/BodyDragFix_behaviour.png)
 
 As can be seen, with these changes the resulting drag curves are far more continuous, and the expected total drag of a unit sphere / cube doesn't change with the angle of attack. This is far more realistic as in reality the pitch angle of a cube causes only a ~7% change in drag coefficient, and for a sphere no change is expected.
 
 The most striking changes are visible for a component which has both its forward face and after face not simulated, like a long fuel tank inbetween a nosecone and an engine.
 
-![A comparison in the resulting drag to angle of attack curves](https://github.com/CensoredUsername/BodyDragFix/images/Comparison.png)
+![A comparison in the resulting drag to angle of attack curves](https://github.com/CensoredUsername/BodyDragFix/blob/master/images/Comparison.png)
 
 With the standard KSP calculation, such a component's drag increases extremely fast when moving away from 0 angle of attack, doubling even at only 2 degrees pitch. In comparison, with this new calculation this only happens after 10 degrees angle of attack. As KSP's wings have extremely gentle lift curves, this means that any variation of lift for manoeuvres would come with significant drag penalties. This behaviour is the reason behind the common wisdom to pitch up your wings in the editor, and purely face prograde while flying.
 
