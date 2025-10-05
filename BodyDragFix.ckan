@@ -1,0 +1,5 @@
+depends:
+  - name: Harmony2
+    version: 2.2.1.0
+conflicts:
+  - name: FerramAerospaceResearchContinued
