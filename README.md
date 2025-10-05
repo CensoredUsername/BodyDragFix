@@ -67,4 +67,5 @@ You should have [HarmonyKSP](https://github.com/KSPModdingLibs/HarmonyKSP) insta
 Incompatibilities
 -----------------
 
-Currently this mod is incompatible with KSP Community Fixes, as this mod rewrites a significant part of the `FlightIntegrator`, and I'll have to figure out how to re-edit their reworked code. If used together, it will look in the aerodynamic debug menus as if the behaviour is changed, but the actual simulation will use the old method.
+None currently known. This mod is compatible with KSP Community Fixes (which rewrites a significant part of the simulation code for performance reasons, so it also patches those). Using this mod together with FAR will not do anything as FAR implements a far more advanced aerodynamic model.
+ 
