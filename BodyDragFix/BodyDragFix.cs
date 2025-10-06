@@ -93,6 +93,10 @@ namespace BodyDragFix
 
             // find our end point: where drag is added to the drag accumulator.
             codeMatcher.RemoveUntilForwardExt(
+                new CodeMatch(OpCodes.Ldloc_S),
+                new CodeMatch(OpCodes.Ldloc_S), // this loads the drag coefficient calculation that we're swapping out.
+                new CodeMatch(OpCodes.Mul),
+                new CodeMatch(OpCodes.Stloc_S),
                 new CodeMatch(OpCodes.Ldloc_1),
                 new CodeMatch(OpCodes.Ldloc_S),
                 new CodeMatch(OpCodes.Add),
@@ -131,52 +135,52 @@ namespace BodyDragFix
             // but it is simply what the compiler spat out for the IL.
             codeMatcher.InsertAndAdvance(
                 // branch if dot > 0.0
-                new CodeMatch(OpCodes.Ldloc_S, dot_location),
-                new CodeMatch(OpCodes.Ldc_R8, 0.0),
-                new CodeMatch(OpCodes.Bgt_Un_S, first_label),
+                new CodeInstruction(OpCodes.Ldloc_S, dot_location),
+                new CodeInstruction(OpCodes.Ldc_R8, 0.0),
+                new CodeInstruction(OpCodes.Bgt_Un_S, first_label),
                 // load FlightIntegratorPerf::fiData.dragSurf
-                new CodeMatch(OpCodes.Ldsfld, fiData),
-                new CodeMatch(OpCodes.Ldfld, dragSurf),
+                new CodeInstruction(OpCodes.Ldsfld, fiData),
+                new CodeInstruction(OpCodes.Ldfld, dragSurf),
                 // load FlightIntegratorPerf::fiData.dragTail
-                new CodeMatch(OpCodes.Ldsfld, fiData),
-                new CodeMatch(OpCodes.Ldfld, dragTail),
+                new CodeInstruction(OpCodes.Ldsfld, fiData),
+                new CodeInstruction(OpCodes.Ldfld, dragTail),
                 // load dot * dot
-                new CodeMatch(OpCodes.Ldloc_S, dot_location),
-                new CodeMatch(OpCodes.Ldloc_S, dot_location),
-                new CodeMatch(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Ldloc_S, dot_location),
+                new CodeInstruction(OpCodes.Ldloc_S, dot_location),
+                new CodeInstruction(OpCodes.Mul),
                 // lerp
-                new CodeMatch(OpCodes.Call, Lerp),
+                new CodeInstruction(OpCodes.Call, Lerp),
                 // multiply by dragMult
-                new CodeMatch(OpCodes.Ldsfld, fiData),
-                new CodeMatch(OpCodes.Ldfld, dragMult),
-                new CodeMatch(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Ldsfld, fiData),
+                new CodeInstruction(OpCodes.Ldfld, dragMult),
+                new CodeInstruction(OpCodes.Mul),
                 // store as a local and branch
-                new CodeMatch(OpCodes.Stloc_S, result_location),
-                new CodeMatch(OpCodes.Br_S, second_label)
+                new CodeInstruction(OpCodes.Stloc_S, result_location),
+                new CodeInstruction(OpCodes.Br_S, second_label)
             ).Insert(
                 // same dance, but now with fiData.dragTip. We need to set a label here too.
                 // load FlightIntegratorPerf::fiData.dragSurf
-                new CodeMatch(OpCodes.Ldsfld, fiData)
+                new CodeInstruction(OpCodes.Ldsfld, fiData)
             ).AddLabels(
                 new[] { first_label }
             ).Advance(1
             ).InsertAndAdvance(
-                new CodeMatch(OpCodes.Ldfld, dragSurf),
+                new CodeInstruction(OpCodes.Ldfld, dragSurf),
                 // load FlightIntegratorPerf::fiData.dragTip
-                new CodeMatch(OpCodes.Ldsfld, fiData),
-                new CodeMatch(OpCodes.Ldfld, dragTip),
+                new CodeInstruction(OpCodes.Ldsfld, fiData),
+                new CodeInstruction(OpCodes.Ldfld, dragTip),
                 // load dot * dot
-                new CodeMatch(OpCodes.Ldloc_S, dot_location),
-                new CodeMatch(OpCodes.Ldloc_S, dot_location),
-                new CodeMatch(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Ldloc_S, dot_location),
+                new CodeInstruction(OpCodes.Ldloc_S, dot_location),
+                new CodeInstruction(OpCodes.Mul),
                 // lerp
-                new CodeMatch(OpCodes.Call, Lerp),
+                new CodeInstruction(OpCodes.Call, Lerp),
                 // multiply by dragMult
-                new CodeMatch(OpCodes.Ldsfld, fiData),
-                new CodeMatch(OpCodes.Ldfld, dragMult),
-                new CodeMatch(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Ldsfld, fiData),
+                new CodeInstruction(OpCodes.Ldfld, dragMult),
+                new CodeInstruction(OpCodes.Mul),
                 // store as a local
-                new CodeMatch(OpCodes.Stloc_S, result_location)
+                new CodeInstruction(OpCodes.Stloc_S, result_location)
             ).AddLabels(
                 // insert second label
                 new[] { second_label }
